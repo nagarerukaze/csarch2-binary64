@@ -1,27 +1,38 @@
 import struct
 
-def base10_to_binary64(decimal):
+def toBinary64(decimal, base):
     # Split the decimal into its mantissa and exponent parts
-    parts = decimal.split(' x ')
-    mantissa = float(parts[0])
-    sign_bit = '0' if mantissa >= 0 else '1'
-    exponent = int(parts[1].replace('10^', ''))
     
-    
-    # Convert mantissa to binary with radix point and fractional part
-    binary_mantissa = bin(int(abs(mantissa)))[2:]
-    fractional_part = abs(mantissa) - int(abs(mantissa))
-    binary_fractional_part = ''
+    try:
+        if base == 10:
+            parts = decimal.split(' x ')
+            mantissa = float(parts[0])
+            sign_bit = '0' if mantissa >= 0 else '1'
+            exponent = int(parts[1].replace('10^', ''))
+            # Convert mantissa to binary with radix point and fractional part
+            binary_mantissa = bin(int(abs(mantissa)))[2:]
+            fractional_part = abs(mantissa) - int(abs(mantissa))
+            binary_fractional_part = ''
 
-    while fractional_part != 0:
-        fractional_part *= 2
-        bit = int(fractional_part)
-        binary_fractional_part += str(bit)
-        fractional_part -= bit
+            while fractional_part != 0:
+                fractional_part *= 2
+                bit = int(fractional_part)
+                binary_fractional_part += str(bit)
+                fractional_part -= bit
 
-    binary_mantissa += '.' + binary_fractional_part
-    
-    mantissa_str = str(binary_mantissa)
+            binary_mantissa += '.' + binary_fractional_part
+            
+            mantissa_str = str(binary_mantissa)
+        elif base == 2:
+            parts = decimal.split(' x ')
+            mantissa = float(parts[0])
+            sign_bit = '0' if mantissa >= 0 else '1'
+            exponent = int(parts[1].replace('2^', ''))
+            
+            mantissa_str = str(mantissa)
+    except:
+        print("Invalid input.")
+        return None
     
     while(abs(float(mantissa_str)) >= 2):
         # Get the character index of the decimal point
@@ -54,9 +65,13 @@ def base10_to_binary64(decimal):
     return binary64
 
 # Example usage
-decimal = "-5.75 x 10^0"
-print(decimal)
-binary = base10_to_binary64(decimal)
-print(binary)
-# print hex
-print(hex(int(binary, 2)))
+decimal = "1.0 x 10^128"
+base = 2
+print("Input: ", decimal)
+print("Base: ", base)
+binary = toBinary64(decimal, base)
+
+if binary != None:
+    print("Binary64: ", binary)
+    print("Binary64 in hex: ", hex(int(binary, 2)))
+    print("Binary64 in float: ", struct.unpack('d', struct.pack('Q', int(binary, 2)))[0])
