@@ -87,7 +87,7 @@ def toBinary64(decimal, base):
     
     # extract fractional part
     binary_fractional_part = mantissa_str[mantissa_str.index('.') + 1:]
-    binary_fractional_part = binary_fractional_part.ljust(52, '0')
+    
    
     if mantissa_str[len(mantissa_str) - 1] == '.':
         mantissa_str = mantissa_str + "0"  
@@ -104,8 +104,12 @@ def toBinary64(decimal, base):
     if exponent_prime <= 0: 
         exponent_prime_bin = '00000000000'
         # normalize mantissa again
+        difference = abs(abs(exponent) - 1022)
+        position = mantissa_str.index('.')
         
-            
+        binary_fractional_part = "0" * (difference - 1)  + str(int(abs(float(mantissa_str.replace('.', '')))))
+        
+    binary_fractional_part = binary_fractional_part.ljust(52, '0')            
     
     print("Sign bit: ", sign_bit)
     print("Exponent: ", exponent)
