@@ -17,22 +17,35 @@ def on_button_click():
         # Check if the dropdown is set to "Base 2" and if the mantissa contains only valid binary digits
         if input_text1 == "Base 2":
             if check_b2input_format(input_text2):
-             # If the input matches the pattern, proceed with conversion
                 binary_result = main.toBinary64(input_text2, 2)
                 error_label.config(text="")
-                output_text = format_binary_result(binary_result)
+                # Format the output text
+                formatted_binary_result = binary_result[:1] + " " + binary_result[1:11] + " " + binary_result[11:]
+                binary_output = format_binary_result(formatted_binary_result)
+                binary_text = f"Binary: {binary_output}"
+                binary_result_text = f"Binary Result: {formatted_binary_result}"
+                hex_result = hex(int(binary_result, 2))
+                hex_text = f"Hexadecimal: {hex_result}"
+                output_text = f"{binary_text}\n{binary_result_text}\n{hex_text}"
                 output_label.config(text=output_text)
             else:
                 error_label.config(text="Invalid input format. Please enter in the format: '0.1 x 2^-15'")
         else:
-                # If the input matches the pattern, proceed with conversion
-             if check_b10input_format(input_text2):
+    # If the input matches the pattern, proceed with conversion
+            if check_b10input_format(input_text2):
                 binary_result = main.toBinary64(input_text2, 10)
                 error_label.config(text="")
-                output_text = format_binary_result(binary_result)
+                formatted_binary_result = binary_result[:1] + " " + binary_result[1:11] + " " + binary_result[11:]
+                binary_output = format_binary_result(formatted_binary_result)
+                binary_text = f"Binary: {binary_output}"
+                binary_result_text = f"Binary Result: {formatted_binary_result}"
+                hex_result = hex(int(binary_result, 2))
+                hex_text = f"Hexadecimal: {hex_result}"
+                output_text = f"{binary_text}\n{binary_result_text}\n{hex_text}"
                 output_label.config(text=output_text)
-             else:
+            else:
                 error_label.config(text="Input format is invalid. Please use the format -5.24 x 10^-51'")
+
 
             
             
@@ -47,7 +60,7 @@ def format_binary_result(binary_result):
         sign_bit = binary_result[0]
         exponent = binary_result[1:12]
         mantissa = binary_result[12:]
-
+        
         formatted_output = "Sign Bit: {}\nExponent: {}\nMantissa: {}".format(sign_bit, exponent, mantissa)
         return formatted_output
 
@@ -91,7 +104,7 @@ root = tk.Tk()
 root.title("IEEE-754 Binary-64 Floating Point Converter")
 
 # Set the window size and make it unchangeable
-root.geometry("450x300")
+root.geometry("600x400")
 root.resizable(False, False)
 
 # Create a dropdown menu for the first input
