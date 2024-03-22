@@ -66,30 +66,26 @@ def toBinary64(decimal, base):
     
     print("Mantissa: ", mantissa_str)
     
+    # normalize binary mantissa
     while(abs(float(mantissa_str)) >= 2):
         # Get the character index of the decimal point
         decimal_index = mantissa_str.index('.')
         new_decimal_index = decimal_index - 1
         decimal_index += 1
-        
         # Insert decimal point at the correct index
         mantissa_str = mantissa_str[:new_decimal_index] + '.' + mantissa_str[new_decimal_index:]
-        
         # Remove decimal_index from string
         mantissa_str = mantissa_str[:decimal_index] + mantissa_str[decimal_index + 1:]
-        
         exponent += 1
-    
     while(abs(float(mantissa_str)) < 1):
         # Get the character index of the decimal point
         decimal_index = mantissa_str.index('.')
         new_decimal_index = decimal_index + 1
-        
         # Insert decimal point at the correct index
         mantissa_str = mantissa_str[new_decimal_index] + '.' + mantissa_str[new_decimal_index + 1:]
-        
         exponent -= 1
     
+    # extract fractional part
     binary_fractional_part = mantissa_str[mantissa_str.index('.') + 1:]
     binary_fractional_part = binary_fractional_part.ljust(52, '0')
    
@@ -98,16 +94,25 @@ def toBinary64(decimal, base):
             
     exponent_prime = exponent + 1023
     
+    # handle special case if exponent is greater than max
     if exponent_prime > 2046:
         exponent_prime_bin = '11111111111'
     else:
         exponent_prime_bin = bin(exponent_prime)[2:].zfill(11)
+        
+    # handle denormalized special case
+    if exponent_prime <= 0: 
+        exponent_prime_bin = '00000000000'
+        # normalize mantissa again
+        
+            
     
     print("Sign bit: ", sign_bit)
     print("Exponent: ", exponent)
     print("E': ", exponent_prime_bin)
     print("Mantissa: ", binary_fractional_part)
     
+    # handle special cases infinity and NaN
     if exponent_prime_bin == '11111111111' and int(binary_fractional_part) == 0:
         if sign_bit == '1':
             return '- Infinity'
@@ -126,8 +131,8 @@ def toBinary64(decimal, base):
     return binary64
 
 # Example usage
-decimal = "0.575 x 10^1"
-base = 10
+decimal = "-1.1110 x 2^-1026"
+base = 2
 print("Input: ", decimal)
 print("Base: ", base)
 binary = toBinary64(decimal, base)
