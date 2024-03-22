@@ -14,15 +14,24 @@ def toBinary64(decimal, base):
             
             for i in range(abs(exponent)):
                 # Get the character index of the decimal point
-                decimal_index = mantissa_str.index('.')
-                new_decimal_index = decimal_index - 1
-                decimal_index += 1
-                
-                # Insert decimal point at the correct index
-                mantissa_str = mantissa_str[:new_decimal_index] + '.' + mantissa_str[new_decimal_index:]
-                
-                # Remove decimal_index from string
-                mantissa_str = mantissa_str[:decimal_index] + mantissa_str[decimal_index + 1:]
+                if exponent < 0:
+                    decimal_index = mantissa_str.index('.')
+                    new_decimal_index = decimal_index - 1
+                    decimal_index += 1
+                    
+                    # Insert decimal point at the correct index
+                    mantissa_str = mantissa_str[:new_decimal_index] + '.' + mantissa_str[new_decimal_index:]
+                    
+                    # Remove decimal_index from string
+                    mantissa_str = mantissa_str[:decimal_index] + mantissa_str[decimal_index + 1:]
+                elif exponent > 0:
+                    decimal_index = mantissa_str.index('.')
+                    mantissa_str = mantissa_str.replace('.', '')
+
+                    # Insert decimal point at the correct index
+                    new_mantissa_str = mantissa_str[:decimal_index + 1] + '.' + mantissa_str[decimal_index + 1:]
+                    mantissa_str = new_mantissa_str
+                    
             
             mantissa = float(mantissa_str)
             
@@ -117,8 +126,8 @@ def toBinary64(decimal, base):
     return binary64
 
 # Example usage
-decimal = "0.1 x 2^-129"
-base = 2
+decimal = "0.575 x 10^1"
+base = 10
 print("Input: ", decimal)
 print("Base: ", base)
 binary = toBinary64(decimal, base)
