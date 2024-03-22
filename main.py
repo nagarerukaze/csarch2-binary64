@@ -24,6 +24,10 @@ def toBinary64(decimal, base):
                     
                     # Remove decimal_index from string
                     mantissa_str = mantissa_str[:decimal_index] + mantissa_str[decimal_index + 1:]
+                    
+                    if(mantissa_str[0] == '.'):
+                        mantissa_str = '0' + mantissa_str
+                    
                 elif exponent > 0:
                     decimal_index = mantissa_str.index('.')
                     mantissa_str = mantissa_str.replace('.', '')
@@ -63,8 +67,6 @@ def toBinary64(decimal, base):
     except:
         print("Invalid input.")
         return None
-    
-    print("Mantissa: ", mantissa_str)
     
     # normalize binary mantissa
     while(abs(float(mantissa_str)) >= 2):
@@ -125,11 +127,16 @@ def toBinary64(decimal, base):
     return binary64
 
 # Example usage
-decimal = "1.111 x 2^9999"
-base = 2
+decimal = "5.0 x 10^-100"
+base = 10
 print("Input: ", decimal)
 print("Base: ", base)
+
+print("\n")
+
 binary = toBinary64(decimal, base)
+
+print("\n")
 
 if binary != None:
     print("Binary: ", binary) 
