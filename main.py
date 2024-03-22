@@ -1,6 +1,6 @@
 import struct
 
-def decimal_to_binary64(decimal):
+def base10_to_binary64(decimal):
     # Split the decimal into its mantissa and exponent parts
     parts = decimal.split(' x ')
     mantissa = float(parts[0])
@@ -56,7 +56,7 @@ def decimal_to_binary64(decimal):
 # Example usage
 decimal = "-5.75 x 10^0"
 print(decimal)
-binary = decimal_to_binary64(decimal)
+binary = base10_to_binary64(decimal)
 print(binary)
 # print hex
 print(hex(int(binary, 2)))
