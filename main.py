@@ -36,6 +36,9 @@ def toBinary64(decimal, base):
                     new_mantissa_str = mantissa_str[:decimal_index + 1] + '.' + mantissa_str[decimal_index + 1:]
                     mantissa_str = new_mantissa_str
                     
+                    if(mantissa_str[len(mantissa_str) - 1] == '.'):
+                        mantissa_str = mantissa_str + '0'
+                    
             
             mantissa = float(mantissa_str)
             
@@ -127,7 +130,7 @@ def toBinary64(decimal, base):
     return binary64
 
 # Example usage
-decimal = "5.0 x 10^-100"
+decimal = "25.0 x 10^3"
 base = 10
 print("Input: ", decimal)
 print("Base: ", base)
