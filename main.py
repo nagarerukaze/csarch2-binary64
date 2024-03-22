@@ -52,11 +52,26 @@ def toBinary64(decimal, base):
     binary_fractional_part = binary_fractional_part.ljust(52, '0')
         
     exponent_prime = exponent + 1023
-    exponent_prime_bin = bin(exponent_prime)[2:].zfill(11)
+    
+    if exponent_prime > 2046:
+        exponent_prime_bin = '11111111111'
+    else:
+        exponent_prime_bin = bin(exponent_prime)[2:].zfill(11)
     
     print("Sign bit: ", sign_bit)
     print("E': ", exponent_prime_bin)
     print("Mantissa: ", binary_fractional_part)
+    
+    if exponent_prime_bin == '11111111111' and binary_fractional_part == '0':
+        if sign_bit == '1':
+            return '- Infinity'
+        else:
+            return 'Infinity'
+    elif exponent_prime_bin == '11111111111' and binary_fractional_part != '0':
+        if binary_fractional_part[0] == '1':
+            return 'qNaN'
+        elif binary_fractional_part[0] == '0':
+            return 'sNaN'
     
     # Combine the sign bit, exponent and mantissa
     binary64 = sign_bit + exponent_prime_bin + binary_fractional_part
@@ -65,13 +80,11 @@ def toBinary64(decimal, base):
     return binary64
 
 # Example usage
-decimal = "1.0 x 10^128"
+decimal = "1.0 x 2^12812341029384"
 base = 2
 print("Input: ", decimal)
 print("Base: ", base)
 binary = toBinary64(decimal, base)
 
 if binary != None:
-    print("Binary64: ", binary)
-    print("Binary64 in hex: ", hex(int(binary, 2)))
-    print("Binary64 in float: ", struct.unpack('d', struct.pack('Q', int(binary, 2)))[0])
+    print("Binary: ", binary) 
