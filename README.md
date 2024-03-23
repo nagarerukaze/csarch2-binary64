@@ -1,4 +1,4 @@
-# csarch2-binary64
+# csarch2-binary64-converter
 
 ## CSARCH2 S15 Simulation Project
 ##### De Gracia, Shanky
