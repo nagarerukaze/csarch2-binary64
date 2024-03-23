@@ -1,6 +1,6 @@
 # csarch2-binary64-converter
 
-## CSARCH2 S15 Simulation Project
+## CSARCH2 S15 Group 7 Simulation Project
 ##### De Gracia, Shanky
 ##### Francisco, Kyle
 ##### Jardenil, Aaron
