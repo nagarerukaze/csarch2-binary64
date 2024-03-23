@@ -26,7 +26,10 @@ def on_button_click():
                 binary_result_text = f"Binary Result: {formatted_binary_result}"
                 hex_result = hex(int(binary_result, 2))
                 hex_text = f"Hexadecimal: {hex_result}"
-                output_text = f"{binary_text}\n{binary_result_text}\n{hex_text}"
+                case_result = check_special_case(binary_result)
+                case_text = f"Special Case:{case_result}"
+
+                output_text = f"{binary_text}\n{binary_result_text}\n{hex_text}\n{case_text}"
                 output_label.config(text=output_text)
             else:
                 error_label.config(text="Invalid input format. Please enter in the format: '0.1 x 2^-15'")
@@ -41,7 +44,10 @@ def on_button_click():
                 binary_result_text = f"Binary Result: {formatted_binary_result}"
                 hex_result = hex(int(binary_result, 2))
                 hex_text = f"Hexadecimal: {hex_result}"
-                output_text = f"{binary_text}\n{binary_result_text}\n{hex_text}"
+                case_result = check_special_case(binary_result)
+                case_text = f"Special Case: {case_result}"
+
+                output_text = f"{binary_text}\n{binary_result_text}\n{hex_text}\n{case_text}"
                 output_label.config(text=output_text)
             else:
                 error_label.config(text="Input format is invalid. Please use the format -5.24 x 10^-51'")
@@ -60,9 +66,30 @@ def format_binary_result(binary_result):
         sign_bit = binary_result[0]
         exponent = binary_result[1:12]
         mantissa = binary_result[12:]
-        
         formatted_output = "Sign Bit: {}\nExponent: {}\nMantissa: {}".format(sign_bit, exponent, mantissa)
         return formatted_output
+
+def check_special_case(binary_result2):
+    sign_bit = binary_result2[0]
+    exponent = binary_result2[1:12]
+    mantissa = binary_result2[12:]
+    if exponent == '11111111111' and int(mantissa, 2) == 0:
+        if sign_bit == '1':
+            return '- Infinity'
+        else:
+            return 'Infinity'
+    elif exponent == '11111111111' and int(mantissa, 2) != 0:
+        if mantissa[0] == '1':
+            return 'qNaN'
+        elif binary_result2[0] == '0':
+            return 'sNaN'
+    if int(exponent, 2) <= 0:
+         return 'Denormalized'
+    else:
+            return 'None'
+       
+
+
 
 def check_b2input_format(input_text):
     pattern = r'^-?[01]+(\.[01]+)? x 2\^(-?\d+)$'
