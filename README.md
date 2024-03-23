@@ -3,3 +3,7 @@
 to run the program, run this in the terminal
 
 python gui-f.py 
+
+or
+
+python3 gui-f.py
