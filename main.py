@@ -1,5 +1,9 @@
 import struct
 
+result_binary = ""
+result_hex = ""
+result_specialCase = ""
+
 def toBinary64(decimal, base):
     # Split the decimal into its mantissa and exponent parts
     
@@ -121,7 +125,16 @@ def toBinary64(decimal, base):
     print("Mantissa: ", binary_fractional_part)
     
     # handle special cases infinity and NaN
-    
+    if exponent_prime_bin == '11111111111' and int(binary_fractional_part) == 0:
+        if sign_bit == '1':
+            return '- Infinity'
+        else:
+            return 'Infinity'
+    elif exponent_prime_bin == '11111111111' and int(binary_fractional_part) != 0:
+        if binary_fractional_part[0] == '1':
+            return 'qNaN'
+        elif binary_fractional_part[0] == '0':
+            return 'sNaN'
     
     # Combine the sign bit, exponent and mantissa
     binary64 = sign_bit + exponent_prime_bin + binary_fractional_part
@@ -130,7 +143,7 @@ def toBinary64(decimal, base):
     return binary64
 
 # Example usage
-decimal = "25.0 x 10^3"
+decimal = "1.245 x 10^-1"
 base = 10
 print("Input: ", decimal)
 print("Base: ", base)
